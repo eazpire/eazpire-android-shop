@@ -4,6 +4,11 @@
     <string name="shop_shell_title">eazpire</string>
     <string name="shop_shell_subtitle">Shop app shell — full catalog UI arrives in a later IDEA-093 phase.</string>
     <string name="shop_switch_to_creator">Open Creator</string>
+    <string name="shop_mode_switch">Shop | Creator →</string>
+    <string name="shop_sign_in">Sign in</string>
+    <string name="shop_signed_in_as">Signed in as %1$s</string>
     <string name="shop_handoff_ok">Signed in via Creator handoff</string>
     <string name="shop_handoff_fail">Could not complete sign-in handoff</string>
+    <string name="shop_login_fallback">Opening sign-in…</string>
+    <string name="shop_promo_not_now">Not now</string>
 </resources>

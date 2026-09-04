@@ -18,6 +18,9 @@ class ShopSessionStore private constructor(context: Context) {
 
     fun getJwt(): String? = prefs.getString(KEY_JWT, null)?.takeIf { it.isNotBlank() }
     fun getOwnerId(): String? = prefs.getString(KEY_OWNER, null)?.takeIf { it.isNotBlank() }
+    fun getShopifyAccess(): String? = prefs.getString(KEY_SHOPIFY_ACCESS, null)?.takeIf { it.isNotBlank() }
+    fun getShopifyRefresh(): String? = prefs.getString(KEY_SHOPIFY_REFRESH, null)?.takeIf { it.isNotBlank() }
+    fun getShopifyExpiresAt(): Long = prefs.getLong(KEY_SHOPIFY_EXPIRES, 0L)
 
     fun saveSession(
         jwt: String,

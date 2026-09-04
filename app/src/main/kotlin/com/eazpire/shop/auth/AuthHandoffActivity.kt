@@ -15,13 +15,14 @@ import kotlinx.coroutines.launch
 
 /**
  * Receives `eazpire-shop://auth/handoff?exchange_token=…` from Creator (or web tests).
+ * On failure, opens [ShopLoginActivity] as OAuth fallback.
  */
 class AuthHandoffActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val token = intent?.data?.getQueryParameter("exchange_token")?.trim().orEmpty()
         if (token.isEmpty()) {
-            finishWithToast(false)
+            finishWithFallback()
             return
         }
         CoroutineScope(Dispatchers.Main).launch {
@@ -37,25 +38,33 @@ class AuthHandoffActivity : ComponentActivity() {
                     shopifyRefresh = result.shopifyRefreshToken,
                     shopifyExpiresAt = result.shopifyExpiresAt,
                 )
-                finishWithToast(true)
+                finishOk()
             } catch (_: Exception) {
-                finishWithToast(false)
+                finishWithFallback()
             }
         }
     }
 
-    private fun finishWithToast(ok: Boolean) {
-        Toast.makeText(
-            this,
-            getString(if (ok) R.string.shop_handoff_ok else R.string.shop_handoff_fail),
-            Toast.LENGTH_SHORT,
-        ).show()
+    private fun finishOk() {
+        Toast.makeText(this, R.string.shop_handoff_ok, Toast.LENGTH_SHORT).show()
         startActivity(
             Intent(this, MainActivity::class.java).addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
             ),
         )
-        setResult(if (ok) Activity.RESULT_OK else Activity.RESULT_CANCELED)
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    private fun finishWithFallback() {
+        Toast.makeText(this, R.string.shop_handoff_fail, Toast.LENGTH_SHORT).show()
+        startActivity(
+            Intent(this, MainActivity::class.java).addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+            ),
+        )
+        startActivity(Intent(this, ShopLoginActivity::class.java))
+        setResult(Activity.RESULT_CANCELED)
         finish()
     }
 }

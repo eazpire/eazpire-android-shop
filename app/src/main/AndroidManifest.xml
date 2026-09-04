@@ -41,5 +41,9 @@
                     android:pathPrefix="/handoff" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".auth.ShopLoginActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 </manifest>
