@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">eazpire</string>
+    <string name="shop_shell_title">eazpire</string>
+    <string name="shop_shell_subtitle">Shop app shell — full catalog UI arrives in a later IDEA-093 phase.</string>
+    <string name="shop_switch_to_creator">Open Creator</string>
+    <string name="shop_handoff_ok">Signed in via Creator handoff</string>
+    <string name="shop_handoff_fail">Could not complete sign-in handoff</string>
+</resources>

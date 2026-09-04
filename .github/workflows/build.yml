@@ -1,0 +1,62 @@
+# Build Shop APK (debug) after sync from monorepo.
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        env:
+          GRADLE_OPTS: ""
+          JAVA_OPTS: ""
+          VERSION_CODE: ${{ github.run_number }}
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Prepare APK for release
+        run: cp app/build/outputs/apk/debug/app-debug.apk eazpire-shop-debug.apk
+
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: "eazpire Shop – Build #${{ github.run_number }}"
+          body: |
+            ## Installation
+            1. Download **eazpire-shop-debug.apk**
+            2. Install on device (allow unknown sources if needed)
+          draft: false
+          files: eazpire-shop-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
