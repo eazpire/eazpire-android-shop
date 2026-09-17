@@ -88,3 +88,5 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.track || vars.PLAY_DEFAULT_TRACK || 'internal' }}
           status: completed
+          # First listing is often incomplete; do not auto-send for review / production.
+          changesNotSentForReview: true
