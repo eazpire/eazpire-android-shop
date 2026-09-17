@@ -15,14 +15,15 @@ import kotlinx.coroutines.launch
 
 /**
  * Receives `eazpire-shop://auth/handoff?exchange_token=…` from Creator (or web tests).
- * On failure, opens [ShopLoginActivity] as OAuth fallback.
+ * Empty token = guest launch (open Shop without forcing login).
+ * On redeem failure, opens [ShopLoginActivity] as OAuth fallback.
  */
 class AuthHandoffActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val token = intent?.data?.getQueryParameter("exchange_token")?.trim().orEmpty()
         if (token.isEmpty()) {
-            finishWithFallback()
+            finishGuest()
             return
         }
         CoroutineScope(Dispatchers.Main).launch {
@@ -43,6 +44,16 @@ class AuthHandoffActivity : ComponentActivity() {
                 finishWithFallback()
             }
         }
+    }
+
+    private fun finishGuest() {
+        startActivity(
+            Intent(this, MainActivity::class.java).addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+            ),
+        )
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     private fun finishOk() {
