@@ -11,4 +11,7 @@
     <string name="shop_handoff_fail">Could not complete sign-in handoff</string>
     <string name="shop_login_fallback">Opening sign-in…</string>
     <string name="shop_promo_not_now">Not now</string>
+    <string name="shop_promo_get_creator_title">Get the Creator app</string>
+    <string name="shop_promo_get_creator_body">Design and publish in eazpire Creator. Install the Creator app for creator tools.</string>
+    <string name="shop_promo_open_play_store">Open Play Store</string>
 </resources>

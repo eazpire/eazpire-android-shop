@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.eazpire.shared.EazpireApps
 import com.eazpire.shared.switcher.AppSwitchHelper
 import com.eazpire.shared.switcher.AppSwitchSession
-import com.eazpire.shared.switcher.SiblingAppPromo
 import com.eazpire.shop.auth.ShopLoginActivity
 import com.eazpire.shop.auth.ShopSessionStore
 import kotlinx.coroutines.launch
@@ -39,9 +38,9 @@ class MainActivity : ComponentActivity() {
         val creatorInstalled = AppSwitchHelper.isInstalled(this, EazpireApps.Target.CREATOR)
         if (!promoDismissed && !creatorInstalled) {
             promo.visibility = View.VISIBLE
-            promoTitle.text = SiblingAppPromo.title(EazpireApps.Target.CREATOR)
-            promoBody.text = SiblingAppPromo.body(EazpireApps.Target.CREATOR)
-            promoCta.text = SiblingAppPromo.cta(EazpireApps.Target.CREATOR)
+            promoTitle.text = getString(R.string.shop_promo_get_creator_title)
+            promoBody.text = getString(R.string.shop_promo_get_creator_body)
+            promoCta.text = getString(R.string.shop_promo_open_play_store)
             promoCta.setOnClickListener {
                 AppSwitchHelper.openSiblingOrStore(this, EazpireApps.Target.CREATOR)
             }
